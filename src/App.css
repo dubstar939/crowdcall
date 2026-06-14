@@ -1,0 +1,225 @@
+/* CROWDCall App Styles */
+
+/* Ensure the flyer canvas container is properly sized */
+[data-flyer-canvas] {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Smooth transitions for canvas content */
+[data-flyer-canvas] * {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Template card hover effects */
+.template-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.template-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Color swatch animations */
+.color-swatch {
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+/* Font card selection */
+.font-card {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Modal animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal-enter {
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal-exit {
+  animation: modalFadeOut 0.2s ease forwards;
+}
+
+/* Toast animation */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.toast-enter {
+  animation: toastSlideIn 0.3s ease forwards;
+}
+
+.toast-exit {
+  animation: toastSlideOut 0.3s ease forwards;
+}
+
+/* Toggle switch custom styles */
+.toggle-switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #CCCCCC;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.toggle-switch.on {
+  background-color: #F7FF58;
+}
+
+.toggle-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.on .toggle-switch-thumb {
+  transform: translateX(16px);
+}
+
+/* Canvas background pattern */
+.canvas-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #f5f5f5 0px,
+    #f5f5f5 10px,
+    #fafafa 10px,
+    #fafafa 20px
+  );
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+/* Input focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #F7FF58;
+  box-shadow: 0 0 0 3px rgba(247, 255, 88, 0.2);
+}
+
+/* Button press effects */
+button:active {
+  transform: scale(0.98);
+}
+
+button:active:not(.btn-icon) {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .control-panel {
+    width: 100%;
+  }
+  
+  /* Increase touch targets on mobile */
+  button {
+    min-height: 40px;
+  }
+}
+
+/* Print styles */
+@media print {
+  header,
+  .control-panel,
+  .bottom-bar,
+  .modal-overlay {
+    display: none !important;
+  }
+  
+  .canvas-area {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .input-field {
+    border-width: 2px;
+  }
+  
+  .btn-primary {
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

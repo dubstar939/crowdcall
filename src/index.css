@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-yellow: #F7FF58;
+    --color-yellow-hover: #E5ED4A;
+    --color-yellow-active: #D4DB44;
+    --color-black: #000000;
+    --color-white: #FFFFFF;
+    --color-dark-gray: #333333;
+    --color-medium-gray: #4D4D4D;
+    --color-gray: #999999;
+    --color-light-gray: #CCCCCC;
+    --color-lighter-gray: #DDDDDD;
+    --color-soft-gray: #EEEEEE;
+    --color-off-white: #FAFAFA;
+    --color-dark-teal: #14282E;
+    --color-darker-teal: #0D1B20;
+    --color-error: #FF4444;
+    --color-success: #4CAF50;
+
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 66 100% 67%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+  body {
+    background-color: var(--color-dark-gray);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#F7FF58] text-black font-bold text-xs px-4 py-2 rounded-lg border-none cursor-pointer transition-all duration-200;
+  }
+  .btn-primary:hover {
+    @apply bg-[#E5ED4A] -translate-y-px;
+  }
+  .btn-primary:active {
+    @apply bg-[#D4DB44] translate-y-0;
+  }
+  .btn-primary:disabled {
+    @apply bg-[#CCCCCC] text-[#999999] cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-black font-bold text-xs px-4 py-2 rounded-lg border-2 border-black cursor-pointer transition-all duration-200;
+  }
+  .btn-secondary:hover {
+    @apply bg-black text-white;
+  }
+
+  .btn-icon {
+    @apply bg-transparent p-2 rounded-lg border-none cursor-pointer text-white transition-all duration-200;
+  }
+  .btn-icon:hover {
+    @apply bg-white/10;
+  }
+  .btn-icon:active {
+    @apply bg-white/20;
+  }
+
+  .card-panel {
+    @apply bg-white rounded-xl p-4 shadow-sm;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .input-field {
+    @apply bg-white border-2 border-[#EEEEEE] rounded-lg px-3 py-2 text-xs text-black placeholder:text-[#999999] outline-none transition-all duration-200;
+  }
+  .input-field:focus {
+    @apply border-[#F7FF58];
+    box-shadow: 0 0 0 3px rgba(247, 255, 88, 0.2);
+  }
+  .input-field:hover:not(:focus) {
+    @apply border-[#DDDDDD];
+  }
+
+  .scroll-panel {
+    @apply overflow-y-auto;
+    scrollbar-width: thin;
+    scrollbar-color: #CCCCCC transparent;
+  }
+  .scroll-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scroll-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-panel::-webkit-scrollbar-thumb {
+    background: #CCCCCC;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  .font-impactful-anton { font-family: 'Anton', sans-serif; }
+  .font-impactful-bebas { font-family: 'Bebas Neue', sans-serif; }
+  .font-impactful-oswald { font-family: 'Oswald', sans-serif; }
+  .font-elegant-playfair { font-family: 'Playfair Display', serif; }
+  .font-elegant-cormorant { font-family: 'Cormorant Garamond', serif; }
+  .font-elegant-libre { font-family: 'Libre Baskerville', serif; }
+  .font-friendly-fredoka { font-family: 'Fredoka', sans-serif; }
+  .font-friendly-nunito { font-family: 'Nunito', sans-serif; }
+  .font-utility-space { font-family: 'Space Grotesk', sans-serif; }
+  .font-utility-atkinson { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .font-utility-quattrocento { font-family: 'Quattrocento Sans', sans-serif; }
+
+  .text-2xs { font-size: 10px; }
+  .text-xs { font-size: 11px; }
+  .text-sm { font-size: 12px; }
+  .text-md { font-size: 14px; }
+  .text-lg { font-size: 16px; }
+  .text-xl { font-size: 20px; }
+  .text-2xl { font-size: 24px; }
+  .text-3xl { font-size: 32px; }
+  .text-4xl { font-size: 48px; }
+}
