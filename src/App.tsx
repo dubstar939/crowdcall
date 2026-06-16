@@ -91,7 +91,7 @@ function AppContent() {
   const { state } = useFlyer();
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-[#333333]">
+    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: 'var(--color-bg-gradient)' }}>
       {/* Header */}
       <Header />
 
