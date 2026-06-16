@@ -109,14 +109,17 @@ function ContentTab() {
         <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
         {!content.image ? (
           <div
-            className="border-2 border-dashed border-[#DDDDDD] rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-[#F7FF58] hover:bg-[#F7FF58]/5 transition-all"
+            className="border-2 border-dashed border-violet-200 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/50 transition-all group"
             onClick={() => fileInputRef.current?.click()}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-            <ImageIcon size={32} className="text-[#999999] mb-2" />
-            <span className="text-sm text-[#666666]">Upload your own image</span>
-            <span className="text-2xs text-[#999999] mt-1">JPG, PNG, HEIC</span>
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-100 via-pink-100 to-orange-100 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+              <ImageIcon size={20} className="text-violet-500" />
+            </div>
+            <span className="text-sm font-semibold text-slate-600">Drop an image here 📸</span>
+            <span className="text-2xs text-slate-400 mt-1">or click to browse</span>
+            <span className="text-2xs text-slate-300 mt-2">JPG, PNG, HEIC</span>
           </div>
         ) : (
           <div>

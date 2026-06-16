@@ -49,6 +49,21 @@ export default function FlyerCanvas() {
     }
   };
 
+  // Empty state illustration component
+  const EmptyStateIllustration = () => (
+    <div className="flex flex-col items-center justify-center">
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-100 via-pink-100 to-orange-100 flex items-center justify-center mb-3">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-violet-500">
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+          <path d="M21 15l-5-5L5 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+      <span className="text-sm font-semibold text-slate-600">Add an image 📸</span>
+      <span className="text-xs text-slate-400 mt-1">or pick from templates</span>
+    </div>
+  );
+
   const renderLayout = () => {
     switch (template.layout) {
       case 'classic':
@@ -59,14 +74,7 @@ export default function FlyerCanvas() {
                 <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: bgColor }}>
-                  <div className="text-center opacity-30">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={textPrimary} strokeWidth="1.5" className="mx-auto mb-2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <path d="M21 15l-5-5L5 21" />
-                    </svg>
-                    <span className="text-xs" style={{ color: textPrimary }}>Add an image</span>
-                  </div>
+                  <EmptyStateIllustration />
                 </div>
               )}
               <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, ${bgColor} 100%)` }} />
@@ -116,8 +124,8 @@ export default function FlyerCanvas() {
                 {content.image ? (
                   <img src={content.image} alt="Flyer" className="w-full h-full object-cover rounded-lg" />
                 ) : (
-                  <div className="w-full h-full rounded-lg flex items-center justify-center border-2 border-dashed" style={{ borderColor: `${textSecondary}30` }}>
-                    <span className="text-xs opacity-30" style={{ color: textPrimary }}>Add an image</span>
+                  <div className="w-full h-full rounded-lg flex items-center justify-center border-2 border-dashed bg-gradient-to-br from-violet-50/50 via-pink-50/50 to-orange-50/50" style={{ borderColor: `${accentColor.hex}40` }}>
+                    <EmptyStateIllustration />
                   </div>
                 )}
               </div>
@@ -151,7 +159,7 @@ export default function FlyerCanvas() {
                 <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: bgColor, filter: 'brightness(0.95)' }}>
-                  <span className="text-xs opacity-30" style={{ color: textPrimary }}>Add an image</span>
+                  <EmptyStateIllustration />
                 </div>
               )}
             </div>

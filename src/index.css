@@ -2,53 +2,105 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   DESIGN SYSTEM - Vibrant & Creative
+   Inspired by Canva + Instagram + Modern SaaS
+   ============================================ */
+
 @layer base {
   :root {
-    --color-yellow: #F7FF58;
-    --color-yellow-hover: #E5ED4A;
-    --color-yellow-active: #D4DB44;
+    /* Primary Gradient Colors */
+    --color-primary-start: #8B5CF6;    /* Violet */
+    --color-primary-mid: #EC4899;      /* Pink */
+    --color-primary-end: #F97316;      /* Orange */
+    
+    /* Accent Colors */
+    --color-accent-purple: #A855F7;
+    --color-accent-pink: #EC4899;
+    --color-accent-orange: #F97316;
+    --color-accent-teal: #14B8A6;
+    --color-accent-blue: #3B82F6;
+    --color-accent-yellow: #FACC15;
+    
+    /* Background Colors - Soft & Warm */
+    --color-bg-primary: #FAFAFC;       /* Soft off-white with blue tint */
+    --color-bg-secondary: #F8F9FE;     /* Light lavender tint */
+    --color-bg-tertiary: #FFFFFF;      /* Pure white for cards */
+    --color-bg-gradient: linear-gradient(135deg, #F5F7FF 0%, #FAF5FF 50%, #FFF5F7 100%);
+    
+    /* Canvas Background */
+    --color-canvas-bg: #F0F4FF;        /* Soft blue-tinted background */
+    --color-canvas-card: #FFFFFF;
+    
+    /* Text Colors */
+    --color-text-primary: #1E293B;     /* Slate 800 - deep blue-gray */
+    --color-text-secondary: #475569;   /* Slate 600 */
+    --color-text-muted: #94A3B8;       /* Slate 400 */
+    --color-text-inverse: #FFFFFF;
+    
+    /* Border Colors */
+    --color-border-light: #E2E8F0;     /* Slate 200 */
+    --color-border-medium: #CBD5E1;    /* Slate 300 */
+    --color-border-accent: #C4B5FD;    /* Soft purple */
+    
+    /* Shadow Colors */
+    --shadow-color-soft: rgba(139, 92, 246, 0.1);
+    --shadow-color-medium: rgba(139, 92, 246, 0.15);
+    --shadow-color-strong: rgba(139, 92, 246, 0.25);
+    
+    /* Status Colors */
+    --color-success: #10B981;
+    --color-error: #EF4444;
+    --color-warning: #F59E0B;
+    --color-info: #3B82F6;
+
+    /* Legacy color references for compatibility */
+    --color-yellow: #FACC15;
+    --color-yellow-hover: #FDE047;
+    --color-yellow-active: #FCD34D;
     --color-black: #000000;
     --color-white: #FFFFFF;
-    --color-dark-gray: #333333;
-    --color-medium-gray: #4D4D4D;
-    --color-gray: #999999;
-    --color-light-gray: #CCCCCC;
-    --color-lighter-gray: #DDDDDD;
-    --color-soft-gray: #EEEEEE;
-    --color-off-white: #FAFAFA;
+    --color-dark-gray: #1E293B;
+    --color-medium-gray: #475569;
+    --color-gray: #94A3B8;
+    --color-light-gray: #CBD5E1;
+    --color-lighter-gray: #E2E8F0;
+    --color-soft-gray: #F1F5F9;
+    --color-off-white: #FAFAFC;
     --color-dark-teal: #14282E;
     --color-darker-teal: #0D1B20;
-    --color-error: #FF4444;
-    --color-success: #4CAF50;
+    --color-error: #EF4444;
+    --color-success: #10B981;
 
+    /* Radix-compatible tokens */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 262 83% 58%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 66 100% 67%;
-    --radius: 0.5rem;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 262 83% 58%;
+    --radius: 0.75rem;
   }
 
   * {
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Inter', 'Nunito Sans', sans-serif;
   }
 
   body {
-    background-color: var(--color-dark-gray);
+    background: var(--color-bg-gradient);
     overflow: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -56,66 +108,96 @@
 }
 
 @layer components {
+  /* Primary Button - Vibrant Gradient */
   .btn-primary {
-    @apply bg-[#F7FF58] text-black font-bold text-xs px-4 py-2 rounded-lg border-none cursor-pointer transition-all duration-200;
+    @apply bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#F97316] text-white font-bold text-xs px-5 py-2.5 rounded-xl border-none cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg;
   }
   .btn-primary:hover {
-    @apply bg-[#E5ED4A] -translate-y-px;
+    @apply -translate-y-0.5 shadow-lg;
+    filter: brightness(1.05);
   }
   .btn-primary:active {
-    @apply bg-[#D4DB44] translate-y-0;
+    @apply translate-y-0 shadow-md;
   }
   .btn-primary:disabled {
-    @apply bg-[#CCCCCC] text-[#999999] cursor-not-allowed;
+    @apply bg-gray-300 text-gray-500 cursor-not-allowed shadow-none;
+    filter: none;
   }
 
+  /* Secondary Button - Outline with Color */
   .btn-secondary {
-    @apply bg-transparent text-black font-bold text-xs px-4 py-2 rounded-lg border-2 border-black cursor-pointer transition-all duration-200;
+    @apply bg-white text-slate-700 font-bold text-xs px-5 py-2.5 rounded-xl border-2 border-slate-200 cursor-pointer transition-all duration-200 hover:border-violet-300 hover:bg-violet-50;
   }
   .btn-secondary:hover {
-    @apply bg-black text-white;
+    @apply border-violet-400 bg-violet-50 text-violet-700;
   }
 
+  /* Icon Button - Soft & Playful */
   .btn-icon {
-    @apply bg-transparent p-2 rounded-lg border-none cursor-pointer text-white transition-all duration-200;
-  }
-  .btn-icon:hover {
-    @apply bg-white/10;
+    @apply bg-white/90 backdrop-blur-sm p-2 rounded-xl cursor-pointer text-slate-600 transition-all duration-200 hover:bg-white hover:text-violet-600 hover:shadow-md hover:-translate-y-0.5;
   }
   .btn-icon:active {
-    @apply bg-white/20;
+    @apply translate-y-0 shadow-sm;
+  }
+  .btn-icon:disabled {
+    @apply opacity-40 cursor-not-allowed;
   }
 
+  /* Card Panel - Soft Shadow & Rounded */
   .card-panel {
-    @apply bg-white rounded-xl p-4 shadow-sm;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    @apply bg-white rounded-2xl p-4 shadow-sm border border-slate-100;
+    box-shadow: 0 2px 8px var(--shadow-color-soft);
+    transition: all 0.2s ease;
+  }
+  .card-panel:hover {
+    box-shadow: 0 4px 12px var(--shadow-color-medium);
   }
 
+  /* Input Field - Modern & Friendly */
   .input-field {
-    @apply bg-white border-2 border-[#EEEEEE] rounded-lg px-3 py-2 text-xs text-black placeholder:text-[#999999] outline-none transition-all duration-200;
+    @apply bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none transition-all duration-200;
   }
   .input-field:focus {
-    @apply border-[#F7FF58];
-    box-shadow: 0 0 0 3px rgba(247, 255, 88, 0.2);
+    @apply border-violet-400;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
   }
   .input-field:hover:not(:focus) {
-    @apply border-[#DDDDDD];
+    @apply border-slate-300;
   }
 
+  /* Scroll Panel - Styled Scrollbar */
   .scroll-panel {
     @apply overflow-y-auto;
     scrollbar-width: thin;
-    scrollbar-color: #CCCCCC transparent;
+    scrollbar-color: #C4B5FD transparent;
   }
   .scroll-panel::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
   .scroll-panel::-webkit-scrollbar-track {
     background: transparent;
   }
   .scroll-panel::-webkit-scrollbar-thumb {
-    background: #CCCCCC;
-    border-radius: 2px;
+    background: #C4B5FD;
+    border-radius: 3px;
+  }
+  .scroll-panel::-webkit-scrollbar-thumb:hover {
+    background: #A855F7;
+  }
+
+  /* Glass Panel - For overlays and modals */
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-violet-600 via-pink-500 to-orange-500 bg-clip-text text-transparent font-bold;
+  }
+
+  /* Floating Action Button */
+  .fab {
+    @apply fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 text-white shadow-lg flex items-center justify-center cursor-pointer transition-all duration-200 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95;
   }
 }
 
