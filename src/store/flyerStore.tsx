@@ -3,8 +3,10 @@ import type {
   FlyerState,
   FlyerAction,
   FlyerContent,
+  FlyerTemplate,
 } from '@/types';
 import { initialContent } from '@/types';
+import { extractColorIdsFromTemplate } from '@/lib/colorUtils';
 
 interface HistoryEntry {
   content: FlyerContent;
@@ -43,6 +45,7 @@ function flyerReducer(state: FlyerState, action: FlyerAction): FlyerState {
       return { ...state, toast: action.toast };
     case 'APPLY_TEMPLATE': {
       const t = action.template;
+      const { themeColorId, accentColorId } = extractColorIdsFromTemplate(t);
       return {
         ...state,
         content: {
@@ -52,8 +55,8 @@ function flyerReducer(state: FlyerState, action: FlyerAction): FlyerState {
           date: t.defaultDate,
           time: t.defaultTime,
           location: t.defaultLocation,
-          themeColorId: t.bgColor === '#000000' ? 'black' : t.bgColor === '#FFFFFF' ? 'white' : t.bgColor === '#F5F5DC' ? 'cream' : 'black',
-          accentColorId: t.accentColor === '#F7FF58' ? 'yellow' : t.accentColor === '#FF4444' ? 'red' : t.accentColor === '#D4AF37' ? 'gold' : 'yellow',
+          themeColorId,
+          accentColorId,
           fontId: t.fontId,
           templateId: t.id,
         },
@@ -90,7 +93,7 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
 
   const pushHistory = useCallback((content: FlyerContent, actionName: string) => {
     if (isUndoing.current) return;
-    undoStack.current.push({ content: JSON.parse(JSON.stringify(content)), actionName });
+    undoStack.current.push({ content: structuredClone(content), actionName });
     if (undoStack.current.length > 50) undoStack.current.shift();
     redoStack.current = [];
   }, []);
@@ -99,7 +102,7 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
     if (undoStack.current.length === 0) return;
     isUndoing.current = true;
     const currentEntry = undoStack.current.pop()!;
-    redoStack.current.push({ content: JSON.parse(JSON.stringify(state.content)), actionName: currentEntry.actionName });
+    redoStack.current.push({ content: structuredClone(state.content), actionName: currentEntry.actionName });
     dispatch({ type: 'SET_CONTENT', payload: currentEntry.content });
     setTimeout(() => { isUndoing.current = false; }, 0);
   }, [state.content]);
@@ -108,7 +111,7 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
     if (redoStack.current.length === 0) return;
     isUndoing.current = true;
     const entry = redoStack.current.pop()!;
-    undoStack.current.push({ content: JSON.parse(JSON.stringify(state.content)), actionName: entry.actionName });
+    undoStack.current.push({ content: structuredClone(state.content), actionName: entry.actionName });
     dispatch({ type: 'SET_CONTENT', payload: entry.content });
     setTimeout(() => { isUndoing.current = false; }, 0);
   }, [state.content]);
@@ -116,17 +119,21 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
   const canUndo = undoStack.current.length > 0;
   const canRedo = redoStack.current.length > 0;
 
-  // Auto-save to localStorage every 3 seconds
+  // Auto-save to localStorage every 30 seconds (reduced from 3s for less intrusive saves)
   useEffect(() => {
     const interval = setInterval(() => {
       try {
         localStorage.setItem('crowdcall-autosave', JSON.stringify(state.content));
-        dispatch({ type: 'SET_TOAST', toast: { message: 'Auto-saved', visible: true } });
-        setTimeout(() => dispatch({ type: 'SET_TOAST', toast: null }), 2000);
+        // Silent save - no toast notification to avoid being intrusive
       } catch (e) {
-        // localStorage may be full
+        // Handle localStorage quota exceeded scenarios
+        if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+          console.warn('localStorage quota exceeded. Consider clearing old data.');
+        } else {
+          console.warn('Failed to auto-save:', e);
+        }
       }
-    }, 3000);
+    }, 30000);
     return () => clearInterval(interval);
   }, [state.content]);
 
@@ -139,7 +146,14 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'SET_CONTENT', payload: parsed });
       }
     } catch (e) {
-      // Ignore parse errors
+      // Handle parse errors and corrupted data
+      console.warn('Failed to load saved flyer data:', e);
+      // Optionally clear corrupted data
+      try {
+        localStorage.removeItem('crowdcall-autosave');
+      } catch (removeErr) {
+        console.warn('Failed to remove corrupted data:', removeErr);
+      }
     }
   }, []);
 
