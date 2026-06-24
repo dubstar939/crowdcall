@@ -4,12 +4,14 @@
 __pycache__/
 *.o
 *.obj
-*.class
 *.exe
 *.dll
 *.so
 *.a
 *.out
+dist/
+build/
+target/
 
 # Dependencies
 node_modules/
@@ -18,13 +20,6 @@ venv/
 .env
 .env.local
 .env.*
-
-# Build outputs
-dist/
-build/
-target/
-*.min.js
-*.bundle.js
 
 # Logs and temp files
 *.log
@@ -35,21 +30,25 @@ target/
 # Editors
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# OS generated files
+# System files
 .DS_Store
 Thumbs.db
 
-# Testing and coverage
-.coverage
+# Coverage
 coverage/
 htmlcov/
+.coverage
+
+# Python specific
 .mypy_cache/
 .pytest_cache/
 
-# Compression archives
+# Java/Gradle
+.gradle/
+*.class
+
+# Compressed files
 *.zip
 *.gz
 *.tar
