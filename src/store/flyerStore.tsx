@@ -3,7 +3,6 @@ import type {
   FlyerState,
   FlyerAction,
   FlyerContent,
-  FlyerTemplate,
 } from '@/types';
 import { initialContent } from '@/types';
 import { extractColorIdsFromTemplate } from '@/lib/colorUtils';
