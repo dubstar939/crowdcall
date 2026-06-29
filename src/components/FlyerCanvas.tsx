@@ -113,4 +113,4 @@ export default forwardRef<FlyerCanvasRef, object>(function FlyerCanvas(_, ref) {
       </div>
     </div>
   );
-}
+});
