@@ -2,8 +2,13 @@ import { useState } from 'react';
 import { X, Download, Image as ImageIcon, FileImage } from 'lucide-react';
 import { useFlyer } from '@/store/flyerStore';
 import { Slider } from '@/components/ui/slider';
+import { FlyerCanvasRef } from '@/components/FlyerCanvas';
 
-export default function DownloadModal() {
+interface DownloadModalProps {
+  canvasRef: React.RefObject<FlyerCanvasRef | null>;
+}
+
+export default function DownloadModal({ canvasRef }: DownloadModalProps) {
   const { dispatch } = useFlyer();
   const [format, setFormat] = useState<'png' | 'jpg'>('png');
   const [quality, setQuality] = useState([90]);
@@ -13,29 +18,31 @@ export default function DownloadModal() {
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      // Find the actual canvas element rendered by FlyerCanvas
-      const flyerCanvas = document.querySelector('[data-flyer-canvas]') as HTMLDivElement;
-      if (!flyerCanvas) {
-        // Fallback: use html2canvas on the rendered flyer
-        const html2canvas = (await import('html2canvas-pro')).default;
-        const canvasElement = document.querySelector('.relative.bg-white.shadow-lg') as HTMLElement;
-        if (canvasElement) {
-          const canvas = await html2canvas(canvasElement, {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: null,
-          });
-          const link = document.createElement('a');
-          link.download = `${fileName}.${format}`;
-          link.href = canvas.toDataURL(format === 'png' ? 'image/png' : 'image/jpeg', quality[0] / 100);
-          link.click();
-        }
+      // Use the ref passed from FlyerCanvas instead of querying DOM
+      const canvasElement = canvasRef.current?.getElement();
+      
+      if (!canvasElement) {
+        throw new Error('Canvas element not found');
       }
+
+      const html2canvas = (await import('html2canvas-pro')).default;
+      const canvas = await html2canvas(canvasElement, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${fileName}.${format}`;
+      link.href = canvas.toDataURL(format === 'png' ? 'image/png' : 'image/jpeg', quality[0] / 100);
+      link.click();
+      
       dispatch({ type: 'SET_TOAST', toast: { message: 'Download started!', visible: true } });
       setTimeout(() => dispatch({ type: 'SET_TOAST', toast: null }), 2000);
       dispatch({ type: 'SET_MODAL', modal: null });
     } catch (err) {
+      console.error('Download error:', err);
       dispatch({ type: 'SET_TOAST', toast: { message: 'Download failed. Please try again.', visible: true } });
       setTimeout(() => dispatch({ type: 'SET_TOAST', toast: null }), 3000);
     } finally {

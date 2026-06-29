@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useFlyer } from '@/store/flyerStore';
 import { TEMPLATES, FLYER_SIZES } from '@/types';
 import {
@@ -10,9 +10,20 @@ import {
   ElegantLayout,
 } from '@/components/layouts/LayoutComponents';
 
-export default function FlyerCanvas() {
+export interface FlyerCanvasRef {
+  getElement: () => HTMLDivElement | null;
+}
+
+export default forwardRef<FlyerCanvasRef, object>(function FlyerCanvas(_, ref) {
   const { state, dispatch } = useFlyer();
   const { content } = state;
+  
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  // Expose the canvas element to parent components via ref
+  useImperativeHandle(ref, () => ({
+    getElement: () => canvasRef.current,
+  }));
 
   const template = useMemo(
     () => TEMPLATES.find((t) => t.id === content.templateId) || TEMPLATES[0],
@@ -60,6 +71,8 @@ export default function FlyerCanvas() {
       style={{ background: 'repeating-linear-gradient(45deg, #f5f5f5 0px, #f5f5f5 10px, #fafafa 10px, #fafafa 20px)' }}
     >
       <div
+        ref={canvasRef}
+        data-flyer-canvas
         className="relative bg-white shadow-lg"
         style={{
           width: '100%',
@@ -100,4 +113,4 @@ export default function FlyerCanvas() {
       </div>
     </div>
   );
-}
+});
