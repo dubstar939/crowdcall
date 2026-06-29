@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FlyerProvider, useFlyer } from '@/store/flyerStore';
 import Header from '@/components/Header';
-import FlyerCanvas, { FlyerCanvasRef } from '@/components/FlyerCanvas';
+import FlyerCanvas, { type FlyerCanvasRef } from '@/components/FlyerCanvas';
 import ControlPanel from '@/components/ControlPanel';
 import BottomBar from '@/components/BottomBar';
 import TemplateModal from '@/components/TemplateModal';

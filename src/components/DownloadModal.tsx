@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { X, Download, Image as ImageIcon, FileImage } from 'lucide-react';
 import { useFlyer } from '@/store/flyerStore';
 import { Slider } from '@/components/ui/slider';
-import { FlyerCanvasRef } from '@/components/FlyerCanvas';
+import { type FlyerCanvasRef } from '@/components/FlyerCanvas';
 
 interface DownloadModalProps {
   canvasRef: React.RefObject<FlyerCanvasRef | null>;
