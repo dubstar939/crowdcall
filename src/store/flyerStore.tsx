@@ -92,16 +92,28 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
 
   const pushHistory = useCallback((content: FlyerContent, actionName: string) => {
     if (isUndoing.current) return;
-    undoStack.current.push({ content: structuredClone(content), actionName });
-    if (undoStack.current.length > 50) undoStack.current.shift();
-    redoStack.current = [];
+    try {
+      undoStack.current.push({ content: structuredClone(content), actionName });
+      if (undoStack.current.length > 50) undoStack.current.shift();
+      redoStack.current = [];
+    } catch (e) {
+      // Fallback for objects that can't be cloned (e.g., with circular references)
+      console.warn('Failed to clone content for history:', e);
+      undoStack.current.push({ content: JSON.parse(JSON.stringify(content)), actionName });
+      if (undoStack.current.length > 50) undoStack.current.shift();
+      redoStack.current = [];
+    }
   }, []);
 
   const undo = useCallback(() => {
     if (undoStack.current.length === 0) return;
     isUndoing.current = true;
     const currentEntry = undoStack.current.pop()!;
-    redoStack.current.push({ content: structuredClone(state.content), actionName: currentEntry.actionName });
+    try {
+      redoStack.current.push({ content: structuredClone(state.content), actionName: currentEntry.actionName });
+    } catch (e) {
+      redoStack.current.push({ content: JSON.parse(JSON.stringify(state.content)), actionName: currentEntry.actionName });
+    }
     dispatch({ type: 'SET_CONTENT', payload: currentEntry.content });
     setTimeout(() => { isUndoing.current = false; }, 0);
   }, [state.content]);
@@ -110,7 +122,11 @@ export function FlyerProvider({ children }: { children: React.ReactNode }) {
     if (redoStack.current.length === 0) return;
     isUndoing.current = true;
     const entry = redoStack.current.pop()!;
-    undoStack.current.push({ content: structuredClone(state.content), actionName: entry.actionName });
+    try {
+      undoStack.current.push({ content: structuredClone(state.content), actionName: entry.actionName });
+    } catch (e) {
+      undoStack.current.push({ content: JSON.parse(JSON.stringify(state.content)), actionName: entry.actionName });
+    }
     dispatch({ type: 'SET_CONTENT', payload: entry.content });
     setTimeout(() => { isUndoing.current = false; }, 0);
   }, [state.content]);
