@@ -8,6 +8,12 @@ import {
   OverlayLayout,
   MinimalLayout,
   ElegantLayout,
+  BoldLayout,
+  GradientLayout,
+  GeometricLayout,
+  CardLayout,
+  BannerLayout,
+  CornerLayout,
 } from '@/components/layouts/LayoutComponents';
 
 export interface FlyerCanvasRef {
@@ -61,8 +67,20 @@ export default forwardRef<FlyerCanvasRef, object>(function FlyerCanvas(_, ref) {
         return <MinimalLayout content={content} template={template} />;
       case 'elegant':
         return <ElegantLayout content={content} template={template} />;
+      case 'bold':
+        return <BoldLayout content={content} template={template} />;
+      case 'gradient':
+        return <GradientLayout content={content} template={template} />;
+      case 'geometric':
+        return <GeometricLayout content={content} template={template} />;
+      case 'card':
+        return <CardLayout content={content} template={template} />;
+      case 'banner':
+        return <BannerLayout content={content} template={template} />;
+      case 'corner':
+        return <CornerLayout content={content} template={template} />;
       default:
-        return null;
+        return <ClassicLayout content={content} template={template} />;
     }
   };
 

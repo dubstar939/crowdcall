@@ -286,3 +286,428 @@ export function ElegantLayout({ content, template }: LayoutProps) {
     </div>
   );
 }
+
+// Bold Layout - Large typography, high contrast, impactful design
+export function BoldLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: bgColor, fontFamily }}>
+      {/* Diagonal accent stripe */}
+      <div className="absolute top-0 right-0 w-32 h-32 transform translate-x-16 -translate-y-16 rotate-45" style={{ backgroundColor: accentColor }} />
+      <div className="flex-1 flex flex-col justify-center px-6 py-8 relative z-10">
+        {content.title && (
+          <h1 className="text-4xl font-black uppercase leading-none mb-3" style={{ color: textPrimary, textShadow: '2px 2px 0px rgba(0,0,0,0.2)' }}>
+            {content.title}
+          </h1>
+        )}
+        {content.subtitle && (
+          <p className="text-lg font-semibold mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+        )}
+        <div className="space-y-2">
+          {content.date && (
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accentColor }} />
+              <span className="text-sm font-bold uppercase tracking-wider" style={{ color: textPrimary }}>{content.date}</span>
+            </div>
+          )}
+          {content.time && (
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accentColor }} />
+              <span className="text-sm font-bold" style={{ color: textPrimary }}>{content.time}</span>
+            </div>
+          )}
+          {content.location && (
+            <div className="flex items-center gap-2 mt-4">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="3">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+              </svg>
+              <span className="text-sm font-medium" style={{ color: textPrimary }}>{content.location}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      {content.image && (
+        <div className="absolute bottom-0 right-0 w-40 h-40 opacity-20">
+          <img src={content.image} alt="" className="w-full h-full object-cover" />
+        </div>
+      )}
+      {content.qrEnabled && content.qrUrl && (
+        <div className="absolute bottom-4 right-4 bg-white p-1 rounded z-20">
+          <QRCodeSVG value={content.qrUrl} size={48} level="M" />
+        </div>
+      )}
+      {content.footerEnabled && (
+        <div className="absolute bottom-2 left-4 z-20">
+          <span className="text-[7px] opacity-40" style={{ color: textSecondary }}>Made with CROWDCall</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Gradient Layout - Modern gradient backgrounds with smooth transitions
+export function GradientLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex flex-col relative" style={{ fontFamily }}>
+      {/* Gradient background overlay */}
+      <div className="absolute inset-0" style={{ 
+        background: `linear-gradient(135deg, ${bgColor} 0%, ${accentColor}40 50%, ${bgColor}CC 100%)` 
+      }} />
+      
+      <div className="relative z-10 flex-1 flex flex-col px-6 py-8">
+        {/* Top decorative element */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
+          {content.date && <span className="text-xs uppercase tracking-widest" style={{ color: textSecondary }}>{content.date}</span>}
+        </div>
+        
+        <div className="flex-1 flex flex-col justify-center">
+          {content.title && (
+            <h1 className="text-3xl font-bold uppercase leading-tight mb-2" style={{ color: textPrimary }}>
+              {content.title}
+            </h1>
+          )}
+          {content.subtitle && (
+            <p className="text-sm mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+          )}
+          
+          <div className="flex items-center gap-4 mb-4">
+            {content.time && (
+              <div className="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={textSecondary} strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span className="text-xs" style={{ color: textSecondary }}>{content.time}</span>
+              </div>
+            )}
+            {content.location && (
+              <div className="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={textSecondary} strokeWidth="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+                <span className="text-xs" style={{ color: textSecondary }}>{content.location}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Bottom section with image or QR */}
+        <div className="flex items-end justify-between mt-4">
+          {content.image && (
+            <div className="w-24 h-24 rounded-lg overflow-hidden shadow-lg border-2" style={{ borderColor: accentColor }}>
+              <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
+            </div>
+          )}
+          <div className="flex flex-col items-end gap-2">
+            {content.qrEnabled && content.qrUrl && (
+              <div className="bg-white p-1 rounded-lg shadow">
+                <QRCodeSVG value={content.qrUrl} size={56} level="M" />
+              </div>
+            )}
+            {content.footerEnabled && (
+              <span className="text-[7px] opacity-40" style={{ color: textSecondary }}>Made with CROWDCall</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Geometric Layout - Angular shapes and patterns
+export function GeometricLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: bgColor, fontFamily }}>
+      {/* Geometric background shapes */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-0 left-0 w-24 h-24 transform -rotate-12 -translate-x-8 -translate-y-8" style={{ backgroundColor: `${accentColor}20` }} />
+        <div className="absolute bottom-0 right-0 w-32 h-32 transform rotate-12 translate-x-8 translate-y-8" style={{ backgroundColor: `${accentColor}30` }} />
+        <div className="absolute top-1/2 left-0 w-16 h-16 transform -translate-x-4 rotate-45" style={{ backgroundColor: `${accentColor}25` }} />
+      </div>
+      
+      <div className="relative z-10 flex-1 flex flex-col px-6 py-8">
+        {/* Header with geometric accent */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[14px] border-l-transparent border-r-transparent" style={{ borderBottomColor: accentColor }} />
+          {content.date && <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: textSecondary }}>{content.date}</span>}
+        </div>
+        
+        {/* Main content */}
+        <div className="flex-1 flex flex-col">
+          {content.title && (
+            <h1 className="text-2xl font-bold uppercase leading-tight mb-2" style={{ color: textPrimary }}>
+              {content.title}
+            </h1>
+          )}
+          {content.subtitle && (
+            <p className="text-xs mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+          )}
+          
+          {/* Info cards */}
+          <div className="space-y-3">
+            {content.time && (
+              <div className="flex items-center gap-3 p-2 rounded" style={{ backgroundColor: `${accentColor}15` }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span className="text-xs font-medium" style={{ color: textPrimary }}>{content.time}</span>
+              </div>
+            )}
+            {content.location && (
+              <div className="flex items-center gap-3 p-2 rounded" style={{ backgroundColor: `${accentColor}15` }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+                <span className="text-xs font-medium" style={{ color: textPrimary }}>{content.location}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Footer with QR */}
+        <div className="flex items-center justify-between mt-6 pt-4 border-t" style={{ borderColor: `${accentColor}40` }}>
+          {content.image && (
+            <div className="w-16 h-16 rounded overflow-hidden">
+              <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
+            </div>
+          )}
+          <div className="flex items-center gap-3">
+            {content.qrEnabled && content.qrUrl && (
+              <div className="bg-white p-1 rounded">
+                <QRCodeSVG value={content.qrUrl} size={40} level="M" />
+              </div>
+            )}
+            {content.footerEnabled && (
+              <span className="text-[7px] opacity-40" style={{ color: textSecondary }}>Made with CROWDCall</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Card Layout - Clean card-based design with subtle shadows
+export function CardLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex items-center justify-center p-4" style={{ backgroundColor: bgColor, fontFamily }}>
+      <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Card header with accent */}
+        <div className="h-2 w-full" style={{ backgroundColor: accentColor }} />
+        
+        <div className="p-6">
+          {/* Date badge */}
+          {content.date && (
+            <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
+              {content.date}
+            </div>
+          )}
+          
+          {/* Title and subtitle */}
+          {content.title && (
+            <h1 className="text-2xl font-bold mb-2" style={{ color: textPrimary }}>{content.title}</h1>
+          )}
+          {content.subtitle && (
+            <p className="text-sm mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+          )}
+          
+          {/* Image */}
+          {content.image && (
+            <div className="w-full h-32 rounded-xl overflow-hidden mb-6">
+              <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
+            </div>
+          )}
+          
+          {/* Info section */}
+          <div className="space-y-3 mb-6">
+            {content.time && (
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: `${accentColor}15` }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </div>
+                <span className="text-sm" style={{ color: textPrimary }}>{content.time}</span>
+              </div>
+            )}
+            {content.location && (
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: `${accentColor}15` }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <span className="text-sm" style={{ color: textPrimary }}>{content.location}</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Footer with QR */}
+          <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: '#f0f0f0' }}>
+            {content.qrEnabled && content.qrUrl && (
+              <div className="bg-gray-50 p-2 rounded-lg">
+                <QRCodeSVG value={content.qrUrl} size={48} level="M" />
+              </div>
+            )}
+            {content.footerEnabled && (
+              <span className="text-[7px] text-gray-400">Made with CROWDCall</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Banner Layout - Horizontal emphasis, great for announcements
+export function BannerLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex flex-col relative" style={{ backgroundColor: bgColor, fontFamily }}>
+      {/* Top banner stripe */}
+      <div className="h-16 flex items-center justify-center px-4" style={{ backgroundColor: accentColor }}>
+        {content.date && (
+          <span className="text-lg font-black uppercase tracking-[0.2em]" style={{ color: textPrimary }}>
+            {content.date}
+          </span>
+        )}
+      </div>
+      
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
+        {content.title && (
+          <h1 className="text-4xl font-black uppercase leading-none mb-3" style={{ color: textPrimary }}>
+            {content.title}
+          </h1>
+        )}
+        {content.subtitle && (
+          <p className="text-lg font-medium mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+        )}
+        
+        {/* Decorative divider */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-1" style={{ backgroundColor: accentColor }} />
+          <div className="w-2 h-2 rotate-45" style={{ backgroundColor: accentColor }} />
+          <div className="w-12 h-1" style={{ backgroundColor: accentColor }} />
+        </div>
+        
+        {/* Time and location */}
+        <div className="space-y-2">
+          {content.time && (
+            <p className="text-base font-semibold" style={{ color: textPrimary }}>{content.time}</p>
+          )}
+          {content.location && (
+            <div className="flex items-center justify-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+              </svg>
+              <span className="text-sm" style={{ color: textSecondary }}>{content.location}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Bottom section */}
+      <div className="flex items-center justify-between px-6 pb-4">
+        {content.image && (
+          <div className="w-20 h-20 rounded-full overflow-hidden border-4" style={{ borderColor: accentColor }}>
+            <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
+          </div>
+        )}
+        <div className="flex flex-col items-end gap-2">
+          {content.qrEnabled && content.qrUrl && (
+            <div className="bg-white p-1 rounded">
+              <QRCodeSVG value={content.qrUrl} size={44} level="M" />
+            </div>
+          )}
+          {content.footerEnabled && (
+            <span className="text-[7px] opacity-40" style={{ color: textSecondary }}>Made with CROWDCall</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Corner Layout - Content anchored to corner with diagonal elements
+export function CornerLayout({ content, template }: LayoutProps) {
+  const { bgColor, textPrimary, textSecondary, accentColor, fontFamily } = useColorScheme(content, template);
+
+  return (
+    <div className="w-full h-full flex flex-col relative overflow-hidden" style={{ backgroundColor: bgColor, fontFamily }}>
+      {/* Diagonal accent */}
+      <div className="absolute top-0 right-0 w-40 h-40 transform translate-x-20 -translate-y-20 rotate-45 rounded-full" style={{ backgroundColor: `${accentColor}30` }} />
+      
+      <div className="relative z-10 flex-1 flex flex-col justify-between p-6">
+        {/* Top left content */}
+        <div>
+          {content.date && (
+            <div className="inline-block px-3 py-1 mb-4 rounded" style={{ backgroundColor: accentColor }}>
+              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: textPrimary }}>{content.date}</span>
+            </div>
+          )}
+          
+          {content.title && (
+            <h1 className="text-3xl font-bold uppercase leading-tight mb-2" style={{ color: textPrimary }}>
+              {content.title}
+            </h1>
+          )}
+          {content.subtitle && (
+            <p className="text-sm mb-6" style={{ color: textSecondary }}>{content.subtitle}</p>
+          )}
+        </div>
+        
+        {/* Center image */}
+        {content.image && (
+          <div className="w-full h-40 rounded-xl overflow-hidden shadow-lg my-4">
+            <img src={content.image} alt="Flyer" className="w-full h-full object-cover" />
+          </div>
+        )}
+        
+        {/* Bottom info */}
+        <div className="space-y-3">
+          {content.time && (
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: accentColor }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={textPrimary} strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium" style={{ color: textPrimary }}>{content.time}</span>
+            </div>
+          )}
+          {content.location && (
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: accentColor }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={textPrimary} strokeWidth="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium" style={{ color: textPrimary }}>{content.location}</span>
+            </div>
+          )}
+        </div>
+        
+        {/* QR and footer */}
+        <div className="flex items-center justify-between mt-4 pt-4 border-t" style={{ borderColor: `${accentColor}30` }}>
+          {content.qrEnabled && content.qrUrl && (
+            <div className="bg-white p-1 rounded-lg shadow">
+              <QRCodeSVG value={content.qrUrl} size={52} level="M" />
+            </div>
+          )}
+          {content.footerEnabled && (
+            <span className="text-[7px] opacity-40" style={{ color: textSecondary }}>Made with CROWDCall</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
