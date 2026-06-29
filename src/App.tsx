@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FlyerProvider, useFlyer } from '@/store/flyerStore';
 import Header from '@/components/Header';
-import FlyerCanvas from '@/components/FlyerCanvas';
+import FlyerCanvas, { FlyerCanvasRef } from '@/components/FlyerCanvas';
 import ControlPanel from '@/components/ControlPanel';
 import BottomBar from '@/components/BottomBar';
 import TemplateModal from '@/components/TemplateModal';
@@ -15,8 +15,21 @@ function MobileControlSheet() {
   const { state, dispatch } = useFlyer();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Only render on mobile
-  if (typeof window !== 'undefined' && window.innerWidth >= 768) return null;
+  // Only render on mobile - use media query listener instead of window check in render
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  if (!isMobile) return null;
 
   return (
     <>
@@ -89,6 +102,7 @@ function MobileControlSheet() {
 
 function AppContent() {
   const { state } = useFlyer();
+  const canvasRef = useRef<FlyerCanvasRef>(null);
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: 'var(--color-bg-gradient)' }}>
@@ -98,7 +112,7 @@ function AppContent() {
       {/* Main Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Canvas Area */}
-        <FlyerCanvas />
+        <FlyerCanvas ref={canvasRef} />
 
         {/* Control Panel - Desktop only */}
         <div className="hidden md:block">
@@ -111,7 +125,7 @@ function AppContent() {
 
       {/* Modals */}
       {state.activeModal === 'template' && <TemplateModal />}
-      {state.activeModal === 'download' && <DownloadModal />}
+      {state.activeModal === 'download' && <DownloadModal canvasRef={canvasRef} />}
       {state.activeModal === 'share' && <ShareModal />}
       {state.activeModal === 'fullscreen' && <FullscreenView />}
 

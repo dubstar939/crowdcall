@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { Image as ImageIcon, Check } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
 import { useFlyer } from '@/store/flyerStore';
 import {
   THEME_COLORS,
@@ -9,6 +9,7 @@ import {
 } from '@/types';
 import type { QuickTab, FlyerSize, FlyerDimensions } from '@/types';
 import { Switch } from '@/components/ui/switch';
+import { ColorPicker } from '@/components/ui/ColorPicker';
 
 function ContentTab() {
   const { state, dispatch } = useFlyer();
@@ -185,52 +186,26 @@ function DesignTab() {
   return (
     <div className="p-4 flex flex-col gap-4">
       {/* Theme Color */}
-      <div className="card-panel">
-        <h3 className="text-md font-bold mb-1">Theme Color</h3>
-        <p className="text-xs text-[#666666] mb-3">Choose a color theme for your flyer</p>
-        <div className="grid grid-cols-7 gap-2">
-          {THEME_COLORS.map((color) => (
-            <button
-              key={color.id}
-              className="w-8 h-8 rounded-full transition-transform hover:scale-110 flex items-center justify-center"
-              style={{
-                backgroundColor: color.hex,
-                border: content.themeColorId === color.id ? '2px solid #000' : '2px solid transparent',
-              }}
-              onClick={() => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: color.id } })}
-              title={color.name}
-            >
-              {content.themeColorId === color.id && (
-                <Check size={12} className={color.hex === '#FFFFFF' || color.hex === '#F5F5DC' ? 'text-black' : 'text-white'} />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ColorPicker
+        colors={THEME_COLORS}
+        selectedId={content.themeColorId}
+        onSelect={(id) => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: id } })}
+        title="Theme Color"
+        description="Choose a color theme for your flyer"
+        columns={7}
+        label="Theme color selection"
+      />
 
       {/* Accent Color */}
-      <div className="card-panel">
-        <h3 className="text-md font-bold mb-1">Accent Color</h3>
-        <p className="text-xs text-[#666666] mb-3">Highlight color for accents</p>
-        <div className="grid grid-cols-6 gap-2">
-          {ACCENT_COLORS.map((color) => (
-            <button
-              key={color.id}
-              className="w-8 h-8 rounded-full transition-transform hover:scale-110 flex items-center justify-center"
-              style={{
-                backgroundColor: color.hex,
-                border: content.accentColorId === color.id ? '2px solid #000' : '2px solid transparent',
-              }}
-              onClick={() => dispatch({ type: 'SET_CONTENT', payload: { accentColorId: color.id } })}
-              title={color.name}
-            >
-              {content.accentColorId === color.id && (
-                <Check size={12} className={color.hex === '#FFFFFF' || color.hex === '#F7FF58' ? 'text-black' : 'text-white'} />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ColorPicker
+        colors={ACCENT_COLORS}
+        selectedId={content.accentColorId}
+        onSelect={(id) => dispatch({ type: 'SET_CONTENT', payload: { accentColorId: id } })}
+        title="Accent Color"
+        description="Highlight color for accents"
+        columns={6}
+        label="Accent color selection"
+      />
 
       {/* Font Selection */}
       <div className="card-panel">
@@ -317,38 +292,22 @@ function AdvancedPanel() {
 
               {section.id === 'color' && (
                 <div className="flex flex-col gap-4">
-                  <div>
-                    <label className="text-xs font-bold mb-2 block">Theme Color</label>
-                    <div className="grid grid-cols-7 gap-1.5">
-                      {THEME_COLORS.map((color) => (
-                        <button
-                          key={color.id}
-                          className="w-7 h-7 rounded-full transition-transform hover:scale-110"
-                          style={{
-                            backgroundColor: color.hex,
-                            border: content.themeColorId === color.id ? '2px solid #000' : '1px solid #ddd',
-                          }}
-                          onClick={() => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: color.id } })}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold mb-2 block">Accent Color</label>
-                    <div className="grid grid-cols-6 gap-1.5">
-                      {ACCENT_COLORS.map((color) => (
-                        <button
-                          key={color.id}
-                          className="w-7 h-7 rounded-full transition-transform hover:scale-110"
-                          style={{
-                            backgroundColor: color.hex,
-                            border: content.accentColorId === color.id ? '2px solid #000' : '1px solid #ddd',
-                          }}
-                          onClick={() => dispatch({ type: 'SET_CONTENT', payload: { accentColorId: color.id } })}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                  <ColorPicker
+                    colors={THEME_COLORS}
+                    selectedId={content.themeColorId}
+                    onSelect={(id) => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: id } })}
+                    title="Theme Color"
+                    columns={7}
+                    label="Theme color selection"
+                  />
+                  <ColorPicker
+                    colors={ACCENT_COLORS}
+                    selectedId={content.accentColorId}
+                    onSelect={(id) => dispatch({ type: 'SET_CONTENT', payload: { accentColorId: id } })}
+                    title="Accent Color"
+                    columns={6}
+                    label="Accent color selection"
+                  />
                 </div>
               )}
 
@@ -373,19 +332,14 @@ function AdvancedPanel() {
               {section.id === 'background' && (
                 <div className="flex flex-col gap-2">
                   <p className="text-xs text-[#666666]">Background options</p>
-                  <div className="grid grid-cols-7 gap-1.5">
-                    {THEME_COLORS.map((color) => (
-                      <button
-                        key={color.id}
-                        className="w-7 h-7 rounded-full transition-transform hover:scale-110"
-                        style={{
-                          backgroundColor: color.hex,
-                          border: content.themeColorId === color.id ? '2px solid #000' : '1px solid #ddd',
-                        }}
-                        onClick={() => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: color.id } })}
-                      />
-                    ))}
-                  </div>
+                  <ColorPicker
+                    colors={THEME_COLORS}
+                    selectedId={content.themeColorId}
+                    onSelect={(id) => dispatch({ type: 'SET_CONTENT', payload: { themeColorId: id } })}
+                    title="Background Color"
+                    columns={7}
+                    label="Background color selection"
+                  />
                 </div>
               )}
 
